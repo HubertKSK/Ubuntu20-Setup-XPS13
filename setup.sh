@@ -23,11 +23,23 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9FDA6BED73CDC22
 
 sudo apt update -qq
 
+
+# Install Defaults
 sudo apt install git htop lame net-tools flatpak audacity \
 openssh-server sshfs simplescreenrecorder nano \
-vlc gthumb gnome-tweaks ubuntu-restricted-extras thunderbird \
+vlc gthumb gnome-tweaks ubuntu-restricted-extras mc zsh \
 python-is-python3 ffmpeg ufw \
 gnome-tweak-tool spell synaptic -y -qq
+sudo snap install mailspring
+
+# zsh config
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sed -i 's/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"agnoster\"/' /home/$USER/.zshrc
+echo 'alias update="sudo apt update && sudo apt upgrade && sudo apt autoremove -y && sudo apt clean"' >> /home/$USER/.zshrc
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+sed -i 's/plugins=(git)/plugins=(git colored-man-pages vscode zsh-autosuggestions))/' /home/$USER/.zshrc
+
+
 
 # Install drivers
 sudo apt install oem-somerville-melisa-meta libfprint-2-tod1-goodix oem-somerville-meta tlp-config -y
@@ -69,14 +81,10 @@ sudo snap remove gnome-characters gnome-calculator gnome-system-monitor
 sudo apt install gnome-characters gnome-calculator gnome-system-monitor \
 gnome-software-plugin-flatpak -y
 
+
 sudo apt purge snapd
 
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-# Setup GNOME material shell
-
-git clone https://github.com/PapyElGringo/material-shell.git ~/.local/share/gnome-shell/extensions/material-shell@papyelgringo
-gnome-extensions enable material-shell@papyelgringo
 
 # Install Icon Theme
 
